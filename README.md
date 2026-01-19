@@ -1,24 +1,26 @@
 # Crypto Pins
 
-A Solana-based enamel pin marketplace bridging physical collectibles with NFT utility.
+Solana-based enamel pin marketplace bridging physical collectibles with NFT utility.
 
-## About
-We create high-quality enamel pins featuring Solana ecosystem projects and meme coins. Each pin can be purchased physically or as an NFT that provides profit-sharing from pin sales.
+## Overview
 
-### Featured Pins
-- Solana Logo (flagship design)
-- BONK meme coin
-- Saga Monkes
-- More Solana ecosystem projects coming soon
+Crypto Pins offers high-quality enamel pins featuring Solana ecosystem projects and meme coins (Bonk, Saga Monkeys, etc.), starting with the iconic Solana logo pin.
+
+**Dual Purchase Model:**
+- Buy physical pins directly 
+- Buy NFT versions and receive profit-sharing from pin sales
 
 ## Target Audience
 - Crypto enthusiasts who love physical collectibles
 - NFT collectors seeking real-world utility
 - Solana ecosystem supporters and degens
-- Collectors who want both digital and physical assets
+- General collectors interested in crypto-themed merchandise
 
-## Dual Purchase Model
-1. **Physical Purchase**: Buy the enamel pin directly
-2. **NFT Purchase**: Buy the NFT and receive profit-sharing from physical pin sales
+## Core Features
+- Physical pin showcase and e-commerce
+- NFT marketplace integration
+- Profit-sharing mechanism for NFT holders
+- Solana wallet integration
+- Traditional and crypto payment options
 
-*Building the bridge between digital assets and physical collectibles.*
+*More details coming as we build this out...*
