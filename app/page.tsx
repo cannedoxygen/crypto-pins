@@ -1,6 +1,7 @@
 import HeroSection from '@/components/HeroSection'
 import PinShowcase from '@/components/PinShowcase'
 import NFTCollection from '@/components/NFTCollection'
+import NFTUtility from '@/components/NFTUtility'
 import EarningsPreview from '@/components/EarningsPreview'
 import CommunityProof from '@/components/CommunityProof'
 import CommunityEngagement from '@/components/CommunityEngagement'
@@ -11,6 +12,7 @@ export default function Home() {
       <HeroSection />
       <PinShowcase />
       <NFTCollection />
+      <NFTUtility />
       <EarningsPreview />
       <CommunityProof />
       <CommunityEngagement />
