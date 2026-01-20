@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react'
 
 const socialLinks = [
-  { name: 'Twitter', icon: '𝕏', followers: '12.5K', color: 'from-gray-400 to-gray-600' },
-  { name: 'Discord', icon: '💬', members: '8.2K', color: 'from-indigo-500 to-purple-500' },
-  { name: 'Instagram', icon: '📷', followers: '5.8K', color: 'from-pink-500 to-purple-500' },
+  { name: 'Twitter', icon: '𝕏', followers: '12.5K', color: 'from-gray-400 to-gray-600', href: 'https://twitter.com/cryptopins_sol' },
+  { name: 'Discord', icon: '💬', members: '8.2K', color: 'from-indigo-500 to-purple-500', href: 'https://discord.gg/cryptopins' },
+  { name: 'Telegram', icon: '✈️', members: '6.3K', color: 'from-sky-400 to-blue-500', href: 'https://t.me/cryptopins_sol' },
 ]
 
 const testimonials = [
@@ -70,8 +70,11 @@ export default function CommunityProof() {
         {/* Social links */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
           {socialLinks.map((social, index) => (
-            <div
+            <a
               key={social.name}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-solana-green/50 transition-all duration-300 cursor-pointer"
               style={{ animationDelay: `${index * 100}ms` }}
             >
@@ -92,7 +95,7 @@ export default function CommunityProof() {
 
               {/* Hover glow */}
               <div className="absolute -inset-0.5 bg-gradient-to-r from-solana-green to-solana-blue rounded-2xl opacity-0 group-hover:opacity-20 blur transition-opacity duration-300" />
-            </div>
+            </a>
           ))}
         </div>
 
