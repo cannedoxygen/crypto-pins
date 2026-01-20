@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 
 export interface InventoryItem {
   id: number
@@ -18,6 +18,15 @@ export interface InventoryState {
   isLoading: boolean
   lastSync: Date | null
   error: string | null
+  isAutoUpdating: boolean
+}
+
+export type InventoryChangeCallback = (items: InventoryItem[]) => void
+
+export interface AutoUpdateConfig {
+  enabled: boolean
+  intervalMs: number
+  onUpdate?: InventoryChangeCallback
 }
 
 // Simulated initial inventory data
@@ -44,13 +53,38 @@ export function getStockPercentage(item: InventoryItem): number {
   return Math.round((item.availableStock / item.totalStock) * 100)
 }
 
-export function useInventory() {
+const DEFAULT_UPDATE_INTERVAL = 5000
+
+export function useInventory(config?: Partial<AutoUpdateConfig>) {
+  const {
+    enabled: autoUpdateEnabled = true,
+    intervalMs = DEFAULT_UPDATE_INTERVAL,
+    onUpdate
+  } = config || {}
+
   const [state, setState] = useState<InventoryState>({
     items: new Map(),
     isLoading: true,
     lastSync: null,
-    error: null
+    error: null,
+    isAutoUpdating: autoUpdateEnabled
   })
+
+  const changeCallbacks = useRef<Set<InventoryChangeCallback>>(new Set())
+
+  // Register a callback for inventory changes
+  const onInventoryChange = useCallback((callback: InventoryChangeCallback) => {
+    changeCallbacks.current.add(callback)
+    return () => {
+      changeCallbacks.current.delete(callback)
+    }
+  }, [])
+
+  // Notify all subscribers of inventory changes
+  const notifyChanges = useCallback((items: InventoryItem[]) => {
+    changeCallbacks.current.forEach(cb => cb(items))
+    onUpdate?.(items)
+  }, [onUpdate])
 
   // Initialize inventory
   useEffect(() => {
@@ -61,15 +95,19 @@ export function useInventory() {
       items: itemsMap,
       isLoading: false,
       lastSync: new Date(),
-      error: null
+      error: null,
+      isAutoUpdating: autoUpdateEnabled
     })
-  }, [])
+  }, [autoUpdateEnabled])
 
   // Simulate real-time stock updates (like from a backend/websocket)
   useEffect(() => {
+    if (!autoUpdateEnabled) return
+
     const interval = setInterval(() => {
       setState(prev => {
         const newItems = new Map(prev.items)
+        const changedItems: InventoryItem[] = []
 
         // Randomly update 1-2 items to simulate real-time changes
         const itemIds = Array.from(newItems.keys())
@@ -79,17 +117,25 @@ export function useInventory() {
           const randomId = itemIds[Math.floor(Math.random() * itemIds.length)]
           const item = newItems.get(randomId)
 
-          if (item && item.availableStock > 0) {
+          if (item) {
             // Simulate random stock changes (-3 to +1)
             const change = Math.floor(Math.random() * 5) - 3
             const newAvailable = Math.max(0, Math.min(item.totalStock, item.availableStock + change))
 
-            newItems.set(randomId, {
+            const updatedItem = {
               ...item,
               availableStock: newAvailable,
               lastUpdated: new Date()
-            })
+            }
+
+            newItems.set(randomId, updatedItem)
+            changedItems.push(updatedItem)
           }
+        }
+
+        // Notify callbacks of changes
+        if (changedItems.length > 0) {
+          notifyChanges(changedItems)
         }
 
         return {
@@ -98,10 +144,10 @@ export function useInventory() {
           lastSync: new Date()
         }
       })
-    }, 5000) // Update every 5 seconds
+    }, intervalMs)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [autoUpdateEnabled, intervalMs, notifyChanges])
 
   const getItem = useCallback((id: number): InventoryItem | undefined => {
     return state.items.get(id)
@@ -197,17 +243,94 @@ export function useInventory() {
     })
   }, [allItems])
 
+  // Toggle auto-updates
+  const setAutoUpdate = useCallback((enabled: boolean) => {
+    setState(prev => ({
+      ...prev,
+      isAutoUpdating: enabled
+    }))
+  }, [])
+
+  // Manual refresh - simulates fetching fresh data from backend
+  const refreshInventory = useCallback(async () => {
+    setState(prev => ({ ...prev, isLoading: true, error: null }))
+
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      setState(prev => {
+        const newItems = new Map(prev.items)
+        const refreshedItems: InventoryItem[] = []
+
+        // Simulate receiving fresh data
+        newItems.forEach((item, id) => {
+          const refreshedItem = {
+            ...item,
+            lastUpdated: new Date()
+          }
+          newItems.set(id, refreshedItem)
+          refreshedItems.push(refreshedItem)
+        })
+
+        notifyChanges(refreshedItems)
+
+        return {
+          ...prev,
+          items: newItems,
+          isLoading: false,
+          lastSync: new Date()
+        }
+      })
+    } catch (error) {
+      setState(prev => ({
+        ...prev,
+        isLoading: false,
+        error: 'Failed to refresh inventory'
+      }))
+    }
+  }, [notifyChanges])
+
+  // Simulate receiving a backend push update for a specific item
+  const applyExternalUpdate = useCallback((itemId: number, updates: Partial<InventoryItem>) => {
+    setState(prev => {
+      const newItems = new Map(prev.items)
+      const existingItem = newItems.get(itemId)
+
+      if (existingItem) {
+        const updatedItem = {
+          ...existingItem,
+          ...updates,
+          lastUpdated: new Date()
+        }
+        newItems.set(itemId, updatedItem)
+        notifyChanges([updatedItem])
+      }
+
+      return {
+        ...prev,
+        items: newItems,
+        lastSync: new Date()
+      }
+    })
+  }, [notifyChanges])
+
   return {
     items: allItems,
     lowStockItems,
     isLoading: state.isLoading,
     lastSync: state.lastSync,
     error: state.error,
+    isAutoUpdating: state.isAutoUpdating,
     getItem,
     getItemStatus,
     getItemStockPercentage,
     reserveItem,
     releaseReservation,
-    confirmPurchase
+    confirmPurchase,
+    setAutoUpdate,
+    refreshInventory,
+    applyExternalUpdate,
+    onInventoryChange
   }
 }

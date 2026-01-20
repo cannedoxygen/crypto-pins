@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import WalletContextProvider from '@/lib/WalletContextProvider'
+import AvailabilityProvider from '@/lib/AvailabilityProvider'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 
@@ -18,11 +19,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <WalletContextProvider>
-          <Navigation />
-          <div className="pt-16">
-            {children}
-          </div>
-          <Footer />
+          <AvailabilityProvider showNotifications={true}>
+            <Navigation />
+            <div className="pt-16">
+              {children}
+            </div>
+            <Footer />
+          </AvailabilityProvider>
         </WalletContextProvider>
       </body>
     </html>
