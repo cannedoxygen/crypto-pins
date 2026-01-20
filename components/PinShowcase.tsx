@@ -3,7 +3,8 @@
 import { useState, useMemo } from 'react'
 import ShareButton from './ShareButton'
 import StockIndicator, { StockBadge, LiveSyncIndicator } from './StockIndicator'
-import { useInventory, getStockStatus } from '@/lib/useInventory'
+import { useAvailability } from '@/lib/AvailabilityProvider'
+import { getStockStatus } from '@/lib/useInventory'
 
 const featuredPins = [
   {
@@ -46,7 +47,7 @@ const featuredPins = [
 
 export default function PinShowcase() {
   const [hoveredPin, setHoveredPin] = useState<number | null>(null)
-  const { items, isLoading, lastSync, getItem, lowStockItems } = useInventory()
+  const { items, isLoading, lastSync, getItem, lowStockItems } = useAvailability()
 
   // Combine pin data with inventory data
   const pinsWithStock = useMemo(() => {
