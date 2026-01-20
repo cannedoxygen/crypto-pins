@@ -46,3 +46,6 @@ next-env.d.ts
 .vscode
 *.sublime-project
 *.sublime-workspace
+
+# Gas Town
+.beads
