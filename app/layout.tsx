@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import WalletContextProvider from '@/lib/WalletContextProvider'
+import Navigation from '@/components/Navigation'
 
 export const metadata: Metadata = {
   title: 'Crypto Pins - Solana NFT Enamel Pin Marketplace',
@@ -13,7 +15,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <WalletContextProvider>
+          <Navigation />
+          <div className="pt-16">
+            {children}
+          </div>
+        </WalletContextProvider>
+      </body>
     </html>
   )
 }
