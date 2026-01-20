@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import ShareButton from './ShareButton'
 
 const featuredPins = [
   {
@@ -83,9 +84,16 @@ export default function PinShowcase() {
                 : 'bg-white/5 border-white/10 hover:border-white/20'
               }
             `}>
-              {/* Tag */}
-              <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-gradient-to-r from-solana-purple/20 to-solana-blue/20 border border-solana-purple/30">
-                <span className="text-xs font-bold text-solana-green">{pin.tag}</span>
+              {/* Tag and Share */}
+              <div className="absolute top-4 right-4 flex items-center gap-2">
+                <div className="px-3 py-1 rounded-full bg-gradient-to-r from-solana-purple/20 to-solana-blue/20 border border-solana-purple/30">
+                  <span className="text-xs font-bold text-solana-green">{pin.tag}</span>
+                </div>
+                <ShareButton
+                  title={`${pin.name} - Crypto Pins`}
+                  text={`Check out this ${pin.name} pin from Crypto Pins! 📌 ${pin.description}`}
+                  size="sm"
+                />
               </div>
 
               {/* Pin display - animated 3D effect */}
