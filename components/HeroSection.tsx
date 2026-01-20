@@ -20,6 +20,13 @@ export default function HeroSection() {
       {/* Glowing orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-solana-purple/30 rounded-full blur-3xl animate-float" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-solana-green/30 rounded-full blur-3xl animate-float" style={{ animationDelay: '-3s' }} />
+      <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-solana-blue/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '-5s' }} />
+
+      {/* Floating crypto symbols */}
+      <div className="absolute top-20 left-10 text-6xl opacity-10 animate-float-slow">💎</div>
+      <div className="absolute top-40 right-20 text-5xl opacity-10 animate-float-slow" style={{ animationDelay: '-2s' }}>⚡</div>
+      <div className="absolute bottom-32 left-20 text-6xl opacity-10 animate-float-slow" style={{ animationDelay: '-4s' }}>🎯</div>
+      <div className="absolute bottom-20 right-32 text-5xl opacity-10 animate-float-slow" style={{ animationDelay: '-6s' }}>🔥</div>
 
       {/* Content */}
       <div className={`relative z-10 max-w-7xl mx-auto px-6 lg:px-8 text-center transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
