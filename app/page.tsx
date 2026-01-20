@@ -1,5 +1,6 @@
 import HeroSection from '@/components/HeroSection'
 import PinShowcase from '@/components/PinShowcase'
+import CollectorSpotlight from '@/components/CollectorSpotlight'
 import NFTCollection from '@/components/NFTCollection'
 import EarningsPreview from '@/components/EarningsPreview'
 import CommunityProof from '@/components/CommunityProof'
@@ -10,6 +11,7 @@ export default function Home() {
     <main className="min-h-screen">
       <HeroSection />
       <PinShowcase />
+      <CollectorSpotlight />
       <NFTCollection />
       <EarningsPreview />
       <CommunityProof />
