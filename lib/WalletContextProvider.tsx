@@ -1,0 +1,50 @@
+'use client'
+
+import { FC, ReactNode, useMemo } from 'react'
+import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
+import {
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+  TorusWalletAdapter,
+  LedgerWalletAdapter,
+  CoinbaseWalletAdapter,
+} from '@solana/wallet-adapter-wallets'
+import { clusterApiUrl } from '@solana/web3.js'
+
+// Import wallet adapter styles
+import '@solana/wallet-adapter-react-ui/styles.css'
+
+interface WalletContextProviderProps {
+  children: ReactNode
+}
+
+export const WalletContextProvider: FC<WalletContextProviderProps> = ({ children }) => {
+  // Use mainnet-beta for production, devnet for development
+  const endpoint = useMemo(() => {
+    const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL
+    return rpcUrl || clusterApiUrl('mainnet-beta')
+  }, [])
+
+  // Initialize supported wallets
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter(),
+      new SolflareWalletAdapter(),
+      new TorusWalletAdapter(),
+      new LedgerWalletAdapter(),
+      new CoinbaseWalletAdapter(),
+    ],
+    []
+  )
+
+  return (
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>{children}</WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  )
+}
+
+export default WalletContextProvider
