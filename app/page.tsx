@@ -1,5 +1,6 @@
 import HeroSection from '@/components/HeroSection'
 import PinShowcase from '@/components/PinShowcase'
+import CryptoCollectorShowcase from '@/components/CryptoCollectorShowcase'
 import CollectorSpotlight from '@/components/CollectorSpotlight'
 import NewCollectorGuide from '@/components/NewCollectorGuide'
 import NFTCollection from '@/components/NFTCollection'
@@ -14,6 +15,7 @@ export default function Home() {
     <main className="min-h-screen">
       <HeroSection />
       <PinShowcase />
+      <CryptoCollectorShowcase />
       <CollectorSpotlight />
       <NewCollectorGuide />
       <NFTCollection />
