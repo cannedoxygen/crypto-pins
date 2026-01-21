@@ -1,6 +1,7 @@
 import HeroSection from '@/components/HeroSection'
 import PinShowcase from '@/components/PinShowcase'
 import CollectorSpotlight from '@/components/CollectorSpotlight'
+import NewCollectorGuide from '@/components/NewCollectorGuide'
 import NFTCollection from '@/components/NFTCollection'
 import NFTUtility from '@/components/NFTUtility'
 import DegenZone from '@/components/DegenZone'
@@ -14,6 +15,7 @@ export default function Home() {
       <HeroSection />
       <PinShowcase />
       <CollectorSpotlight />
+      <NewCollectorGuide />
       <NFTCollection />
       <NFTUtility />
       <DegenZone />
